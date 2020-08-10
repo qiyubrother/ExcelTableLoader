@@ -28,6 +28,38 @@ namespace qiyubrother
         /// </summary>
         public static void Stop()
         {
+            while (queue.Count > 0)
+            {
+                var item = queue.Dequeue();
+                var fn = Path.Combine(Environment.CurrentDirectory, $"Trace-{DateTime.Now.Year}{DateTime.Now.Month.ToString().PadLeft(2, '0')}{DateTime.Now.Day.ToString().PadLeft(2, '0')}.log");
+                var cnt = 0;
+                do
+                {
+                    try
+                    {
+                        System.IO.File.AppendAllLines(fn, new[] { item });
+                        OutputDebugString(item);
+                        break;
+                    }
+                    catch
+                    {
+                        cnt++;
+                        System.Threading.Thread.Sleep(200);
+                    }
+                    if (cnt > 3)
+                    {
+                        // 超过3次写入错误
+                        var efn = $"Error-{DateTime.Now.Year}{DateTime.Now.Month.ToString().PadLeft(2, '0')}{DateTime.Now.Day.ToString().PadLeft(2, '0')}.log";
+                        try
+                        {
+                            System.IO.File.AppendAllLines(efn, new[] { $"[{DateTime.Now.ToString()}]日志系统错误。" });
+                        }
+                        catch { }
+
+                        break;
+                    }
+                } while (true);
+            }
             _enable = false;
         }
         /// <summary>
@@ -38,7 +70,7 @@ namespace qiyubrother
         public static void Trace(string s, params object[] param)
         {
             var p = param == null || param.Length == 0 ? new[] { "" } : param;
-            var str = $"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff")}][ThreadId:{Thread.CurrentThread.ManagedThreadId}]";
+            var str = $"[{DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss fff")}]";
             if (param == null || param.Length == 0)
             {
                 str = str + s;
@@ -49,7 +81,6 @@ namespace qiyubrother
             }
             Console.WriteLine(str);
             queue.Enqueue(str);
-            //Task.Run(() => qiyubrother.SysLogHelper.SendMessage(str)); // 发送日志到syslog服务器
         }
 
         /// <summary>

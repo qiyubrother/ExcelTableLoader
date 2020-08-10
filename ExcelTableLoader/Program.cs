@@ -6,6 +6,7 @@ using System.Linq;
 using Spire.Xls;
 using qiyubrother;
 using System.IO;
+using System.Threading;
 
 namespace ExcelTableLoader
 {
