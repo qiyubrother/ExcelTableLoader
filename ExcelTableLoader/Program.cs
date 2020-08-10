@@ -12,7 +12,7 @@ namespace ExcelTableLoader
 {
     class Program
     {
-        static string dbFileName = @"ExcelData";
+        static string dbFileName = @"ExcelData"; // sqlite 数据库文件名
         static void Main(string[] args)
         {
             LogHelper.StartService();
