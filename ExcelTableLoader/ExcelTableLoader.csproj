@@ -56,10 +56,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\Spire.License.dll</HintPath>
     </Reference>
-    <Reference Include="Spire.Pdf, Version=3.8.57.7040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Spire.Pdf.dll</HintPath>
-    </Reference>
     <Reference Include="Spire.XLS, Version=7.11.13.7040, Culture=neutral, PublicKeyToken=663f351905198cb3, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\Spire.XLS.dll</HintPath>
