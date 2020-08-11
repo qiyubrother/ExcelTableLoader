@@ -7,6 +7,8 @@ using Spire.Xls;
 using qiyubrother;
 using System.IO;
 using System.Threading;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ExcelTableLoader
 {
@@ -16,8 +18,19 @@ namespace ExcelTableLoader
         static int titleRowIndex = 2; //标题所在行
         static void Main(string[] args)
         {
+            var configFileName = "config.json";
+            if (!File.Exists(configFileName))
+            {
+                LogHelper.Trace("config.json file losted.");
+                return;
+            }
+            var jo = JObject.Parse(File.ReadAllText(configFileName));
+            try { dbFileName = jo["sqliteDatabaseFile"].ToString(); }
+            catch { LogHelper.Trace("config error. key is [sqliteDatabaseFile]."); }
+            try { titleRowIndex = Convert.ToInt32(jo["titleLineNumber"].ToString()); } 
+            catch { LogHelper.Trace("config error. key is [titleLineNumber]"); }
+
             LogHelper.StartService();
-            //LoadExcelFile(@"d:\aa\b\1.xls");
 
             if (args.Length != 1)
             {
@@ -129,8 +142,8 @@ namespace ExcelTableLoader
                 var rows = sheet.Rows.Count() - 1;
                 while (dataLineNumber < rows)
                 {
-                    SQLiteCommand cmdInsert = new SQLiteCommand("INSERT INTO EnterpriseInfo(ycrq, qymc, jyzt, fddbr, zczb, clrq, sssf, sscs, ssqx, dh1, dh2, dh3, dh4, dh5, dh6, dh7, dh8, dh9, dh10, dh11, dh12, email1, email2,email3, email4, email5, email6, tyshxydm, nsrsbm, zch, zzjgdm, cbrs, qylx, sshy, cym1, cym2, cym3, cym4, cym5, gw, qydz, jyfw) values (@ycrq, @qymc, @jyzt, @fddbr, @zczb, @clrq, @sssf, @sscs, @ssqx, @dh1, @dh2, @dh3, @dh4, @dh5, @dh6, @dh7, @dh8, @dh9, @dh10, @dh11, @dh12, @email1, @email2, @email3, @email4, @email5, @email6, @tyshxydm, @nsrsbm, @zch, @zzjgdm, @cbrs, @qylx, @sshy, @cym1, @cym2, @cym3, @cym4, @cym5, @gw, @qydz, @jyfw)", cn);
-                    SQLiteCommand cmdUpdate = new SQLiteCommand("UPDATE EnterpriseInfo SET ycrq=@ycrq, qymc=@qymc, jyzt=@jyzt, fddbr=@fddbr, zczb=@zczb, clrq=@clrq, sssf=@sssf, sscs=@sscs, ssqx=@ssqx, dh1=@dh1, dh2=@dh2, dh3=@dh3, dh4=@dh4, dh5=@dh5, dh6=@dh6, dh7=@dh7, dh8=@dh8, dh9=@dh9, dh10=@dh10, dh11=@dh11, dh12=@dh12, email1=@email1, email2=@email2, email3=@email3, email4=@email4, email5=@email5, email6=@email6, nsrsbm=@nsrsbm, zch=@zch, zzjgdm=@zzjgdm, cbrs=@cbrs, qylx=@qylx, sshy=@sshy, cym1=@cym1, cym2=@cym2, cym3=@cym3, cym4=@cym4, cym5=@cym5, gw=@gw, qydz=@qydz, jyfw=@jyfw WHERE tyshxydm=@tyshxydm", cn);
+                    SQLiteCommand cmdInsert = new SQLiteCommand("INSERT INTO EnterpriseInfo(ycrq, qymc, jyzt, fddbr, zczb, clrq, sssf, sscs, ssqx, dh1, dh2, dh3, dh4, dh5, dh6, dh7, dh8, dh9, dh10, dh11, dh12, zj1, zj2, zj3, zj4, zj5, email1, email2,email3, email4, email5, email6, tyshxydm, nsrsbm, zch, zzjgdm, cbrs, qylx, sshy, cym1, cym2, cym3, cym4, cym5, gw, qydz, jyfw) values (@ycrq, @qymc, @jyzt, @fddbr, @zczb, @clrq, @sssf, @sscs, @ssqx, @dh1, @dh2, @dh3, @dh4, @dh5, @dh6, @dh7, @dh8, @dh9, @dh10, @dh11, @dh12, @zj1, @zj2, @zj3, @zj4, @zj5, @email1, @email2, @email3, @email4, @email5, @email6, @tyshxydm, @nsrsbm, @zch, @zzjgdm, @cbrs, @qylx, @sshy, @cym1, @cym2, @cym3, @cym4, @cym5, @gw, @qydz, @jyfw)", cn);
+                    SQLiteCommand cmdUpdate = new SQLiteCommand("UPDATE EnterpriseInfo SET ycrq=@ycrq, qymc=@qymc, jyzt=@jyzt, fddbr=@fddbr, zczb=@zczb, clrq=@clrq, sssf=@sssf, sscs=@sscs, ssqx=@ssqx, dh1=@dh1, dh2=@dh2, dh3=@dh3, dh4=@dh4, dh5=@dh5, dh6=@dh6, dh7=@dh7, dh8=@dh8, dh9=@dh9, dh10=@dh10, dh11=@dh11, dh12=@dh12, zj1=@zj1, zj2=@zj2, zj3=@zj3, zj4=@zj4, zj5=@zj5, email1=@email1, email2=@email2, email3=@email3, email4=@email4, email5=@email5, email6=@email6, nsrsbm=@nsrsbm, zch=@zch, zzjgdm=@zzjgdm, cbrs=@cbrs, qylx=@qylx, sshy=@sshy, cym1=@cym1, cym2=@cym2, cym3=@cym3, cym4=@cym4, cym5=@cym5, gw=@gw, qydz=@qydz, jyfw=@jyfw WHERE tyshxydm=@tyshxydm", cn);
 
                     var item = GetColItem(cols, "异常日期");
                     var ycrq = Cell(dataLineNumber, item.Index);
@@ -192,14 +205,46 @@ namespace ExcelTableLoader
                     item = GetColItem(cols, "更多电话");
                     var dh2 = Cell(dataLineNumber, item.Index);
                     var lstDh2 = dh2.Split(';'); //电话清单2
-                    var dhs = new List<string>();
+                    var dhs = new List<string>(); // 存储手机号码清单
+                    var zjs = new List<string>(); // 存储座机号码清单
                     dhs.AddRange(lstDh1);
                     dhs.AddRange(lstDh2);
+                    // 区分座机与手机
+                    for(var x = dhs.Count - 1; x >= 0; x--)
+                    {
+                        var tel = dhs[x].Trim();
+                        if (tel.Length > 1)
+                        {
+                            if (tel[0] != '1' || tel.Length != 11)
+                            {
+                                // 座机
+                                zjs.Add(tel);
+                                dhs.RemoveAt(x);
+                            }
+                        }
+                        else
+                        {
+                            // 无效号码
+                            dhs.RemoveAt(x);
+                        }
+                    }
+                    // 手机号
                     var dh_arr = new string[12];
-                    for (var i = 0; i < dhs.Count && i < 12; dh_arr[i] = dhs[i], i++) ;
-                    for (var i = 0; i < 12; i++)
+                    for (var i = 0; i < dhs.Count && i < dh_arr.Length; dh_arr[i] = dhs[i], i++) ;
+                    for (var i = 0; i < dh_arr.Length; i++)
                     {
                         param = new SQLiteParameter("@dh" + (i + 1).ToString(), dh_arr[i]);
+                        param.DbType = DbType.String;
+                        cmdInsert.Parameters.Add(param);
+                        cmdUpdate.Parameters.Add(param);
+                    }
+
+                    // 座机号
+                    var zj_arr = new string[5];
+                    for (var i = 0; i < zjs.Count && i < zj_arr.Length; zj_arr[i] = zjs[i], i++) ;
+                    for (var i = 0; i < zj_arr.Length; i++)
+                    {
+                        param = new SQLiteParameter("@zj" + (i + 1).ToString(), dh_arr[i]);
                         param.DbType = DbType.String;
                         cmdInsert.Parameters.Add(param);
                         cmdUpdate.Parameters.Add(param);
@@ -215,8 +260,8 @@ namespace ExcelTableLoader
                     dhs.AddRange(lstEmail1);
                     dhs.AddRange(lstEmail2);
                     var email_arr = new string[6];
-                    for (var i = 0; i < emails.Count && i < 6; email_arr[i] = emails[i], i++) ;
-                    for (var i = 0; i < 6; i++)
+                    for (var i = 0; i < emails.Count && i < email_arr.Length; email_arr[i] = emails[i], i++) ;
+                    for (var i = 0; i < email_arr.Length; i++)
                     {
                         param = new SQLiteParameter("@email" + (i + 1).ToString(), email_arr[i]);
                         param.DbType = DbType.String;
@@ -278,8 +323,8 @@ namespace ExcelTableLoader
                     var cym = Cell(dataLineNumber, item.Index);
                     var lstCym = email1.Split(';'); //曾用名清单
                     var cym_arr = new string[5];
-                    for (var i = 0; i < lstCym.Length && i < 5; cym_arr[i] = lstCym[i], i++) ;
-                    for (var i = 0; i < 5; i++)
+                    for (var i = 0; i < lstCym.Length && i < cym_arr.Length; cym_arr[i] = lstCym[i], i++) ;
+                    for (var i = 0; i < cym_arr.Length; i++)
                     {
                         param = new SQLiteParameter("@cym" + (i + 1).ToString(), cym_arr[i]);
                         param.DbType = DbType.String;
