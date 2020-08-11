@@ -209,10 +209,14 @@ namespace ExcelTableLoader
                     var zjs = new List<string>(); // 存储座机号码清单
                     dhs.AddRange(lstDh1);
                     dhs.AddRange(lstDh2);
+                    for(var i = 0; i < dhs.Count; i++)
+                    {
+                        dhs[i] = dhs[i].Trim();
+                    }
                     // 区分座机与手机
                     for(var x = dhs.Count - 1; x >= 0; x--)
                     {
-                        var tel = dhs[x].Trim();
+                        var tel = dhs[x];
                         if (tel.Length > 1)
                         {
                             if (tel[0] != '1' || tel.Length != 11)
@@ -228,6 +232,7 @@ namespace ExcelTableLoader
                             dhs.RemoveAt(x);
                         }
                     }
+
                     // 手机号
                     var dh_arr = new string[12];
                     for (var i = 0; i < dhs.Count && i < dh_arr.Length; dh_arr[i] = dhs[i], i++) ;
@@ -244,7 +249,7 @@ namespace ExcelTableLoader
                     for (var i = 0; i < zjs.Count && i < zj_arr.Length; zj_arr[i] = zjs[i], i++) ;
                     for (var i = 0; i < zj_arr.Length; i++)
                     {
-                        param = new SQLiteParameter("@zj" + (i + 1).ToString(), dh_arr[i]);
+                        param = new SQLiteParameter("@zj" + (i + 1).ToString(), zj_arr[i]);
                         param.DbType = DbType.String;
                         cmdInsert.Parameters.Add(param);
                         cmdUpdate.Parameters.Add(param);
