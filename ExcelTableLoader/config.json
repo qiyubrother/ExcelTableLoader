@@ -1,4 +1,4 @@
 {
-  "sqliteDatabaseFile": "ExcelData",
-  "titleLineNumber": "2"
+  "sqliteDatabaseFile": "ExcelData", /* 数据库文件名 */
+  "titleLineNumber": "2" /* 标题列所在行 */
 }
