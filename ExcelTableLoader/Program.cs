@@ -13,9 +13,11 @@ namespace ExcelTableLoader
     class Program
     {
         static string dbFileName = @"ExcelData"; // sqlite 数据库文件名
+        static int titleRowIndex = 2; //标题所在行
         static void Main(string[] args)
         {
             LogHelper.StartService();
+            //LoadExcelFile(@"d:\aa\b\1.xls");
 
             if (args.Length != 1)
             {
@@ -86,7 +88,6 @@ namespace ExcelTableLoader
                 new ColMap { Name = "企业地址" },
                 new ColMap { Name = "经营范围" },
             };
-            var titleRowIndex = 1; //标题所在行
             Workbook workbook = new Workbook();
 
             workbook.LoadFromFile(fileName);
@@ -96,6 +97,8 @@ namespace ExcelTableLoader
 
             Func<int, int, string> Cell = (rowIndex, colIndex) =>
             {
+                if (colIndex == 0)
+                    return string.Empty;
                 return sheet.Range[rowIndex, colIndex].Value;
             };
 
