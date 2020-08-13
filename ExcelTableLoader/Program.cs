@@ -139,8 +139,8 @@ namespace ExcelTableLoader
             {
                 cn.Open();
                 var trans = cn.BeginTransaction();
-                var rows = sheet.Rows.Count() - 1;
-                while (dataLineNumber < rows)
+                var rows = sheet.Rows.Count();
+                while (dataLineNumber <= rows)
                 {
                     SQLiteCommand cmdInsert = new SQLiteCommand("INSERT INTO EnterpriseInfo(ycrq, qymc, jyzt, fddbr, zczb, clrq, sssf, sscs, ssqx, dh1, dh2, dh3, dh4, dh5, dh6, dh7, dh8, dh9, dh10, dh11, dh12, zj1, zj2, zj3, zj4, zj5, email1, email2,email3, email4, email5, email6, tyshxydm, nsrsbm, zch, zzjgdm, cbrs, qylx, sshy, cym1, cym2, cym3, cym4, cym5, gw, qydz, jyfw) values (@ycrq, @qymc, @jyzt, @fddbr, @zczb, @clrq, @sssf, @sscs, @ssqx, @dh1, @dh2, @dh3, @dh4, @dh5, @dh6, @dh7, @dh8, @dh9, @dh10, @dh11, @dh12, @zj1, @zj2, @zj3, @zj4, @zj5, @email1, @email2, @email3, @email4, @email5, @email6, @tyshxydm, @nsrsbm, @zch, @zzjgdm, @cbrs, @qylx, @sshy, @cym1, @cym2, @cym3, @cym4, @cym5, @gw, @qydz, @jyfw)", cn);
                     SQLiteCommand cmdUpdate = new SQLiteCommand("UPDATE EnterpriseInfo SET ycrq=@ycrq, qymc=@qymc, jyzt=@jyzt, fddbr=@fddbr, zczb=@zczb, clrq=@clrq, sssf=@sssf, sscs=@sscs, ssqx=@ssqx, dh1=@dh1, dh2=@dh2, dh3=@dh3, dh4=@dh4, dh5=@dh5, dh6=@dh6, dh7=@dh7, dh8=@dh8, dh9=@dh9, dh10=@dh10, dh11=@dh11, dh12=@dh12, zj1=@zj1, zj2=@zj2, zj3=@zj3, zj4=@zj4, zj5=@zj5, email1=@email1, email2=@email2, email3=@email3, email4=@email4, email5=@email5, email6=@email6, nsrsbm=@nsrsbm, zch=@zch, zzjgdm=@zzjgdm, cbrs=@cbrs, qylx=@qylx, sshy=@sshy, cym1=@cym1, cym2=@cym2, cym3=@cym3, cym4=@cym4, cym5=@cym5, gw=@gw, qydz=@qydz, jyfw=@jyfw WHERE tyshxydm=@tyshxydm", cn);
@@ -397,7 +397,7 @@ namespace ExcelTableLoader
                 trans.Commit();
             }
 
-            LogHelper.Trace($"FileName:{fileName}, Insert:{insertCount}, Updated:{updateCount}, Ignored:{ignoreCount}");
+            LogHelper.Trace($"FileName:{fileName}, Rows:{sheet.Rows.Count()}, Insert:{insertCount}, Updated:{updateCount}, Ignored:{ignoreCount}");
         }
 
         private static ColMap GetColItem(IEnumerable<ColMap> lst, string name)
