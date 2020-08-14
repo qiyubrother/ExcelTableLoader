@@ -201,7 +201,7 @@ namespace ExcelTableLoader
 
                     item = GetColItem(cols, "电话");
                     var dh1 = Cell(dataLineNumber, item.Index);
-                    var lstDh1 = dh1.Split(';'); //电话清单1
+                    var lstDh1 = dh1.Split(new[] { ';', ':', '!', ',', ' ', '，', '；', '：', '！' , '　'}); //电话清单1
                     item = GetColItem(cols, "更多电话");
                     var dh2 = Cell(dataLineNumber, item.Index);
                     var lstDh2 = dh2.Split(';'); //电话清单2
