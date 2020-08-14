@@ -201,10 +201,11 @@ namespace ExcelTableLoader
 
                     item = GetColItem(cols, "电话");
                     var dh1 = Cell(dataLineNumber, item.Index);
-                    var lstDh1 = dh1.Split(new[] { ';', ':', '!', ',', ' ', '，', '；', '：', '！' , '　'}); //电话清单1
+                    var splitChars = new[] { ';', ':', '!', ',', ' ', '|', '，', '；', '：', '！', '　' };
+                    var lstDh1 = dh1.Split(splitChars); //电话清单1
                     item = GetColItem(cols, "更多电话");
                     var dh2 = Cell(dataLineNumber, item.Index);
-                    var lstDh2 = dh2.Split(';'); //电话清单2
+                    var lstDh2 = dh2.Split(splitChars); //电话清单2
                     var dhs = new List<string>(); // 存储手机号码清单
                     var zjs = new List<string>(); // 存储座机号码清单
                     dhs.AddRange(lstDh1);
@@ -257,10 +258,10 @@ namespace ExcelTableLoader
 
                     item = GetColItem(cols, "邮箱");
                     var email1 = Cell(dataLineNumber, item.Index);
-                    var lstEmail1 = email1.Split(';'); //邮箱清单1
+                    var lstEmail1 = email1.Split(splitChars); //邮箱清单1
                     item = GetColItem(cols, "更多邮箱");
                     var email2 = Cell(dataLineNumber, item.Index);
-                    var lstEmail2 = email2.Split(';'); //邮箱清单2
+                    var lstEmail2 = email2.Split(splitChars); //邮箱清单2
                     var emails = new List<string>();
                     dhs.AddRange(lstEmail1);
                     dhs.AddRange(lstEmail2);
