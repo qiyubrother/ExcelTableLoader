@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30320.27
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1062
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExcelTableLoader", "ExcelTableLoader\ExcelTableLoader.csproj", "{B6A1E061-6CD7-4B59-8624-1F94D18DD2A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MysqlLoader", "MysqlLoader\MysqlLoader.csproj", "{9FE077A3-0F7F-46D3-9EF1-9DB91B71F6CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B6A1E061-6CD7-4B59-8624-1F94D18DD2A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6A1E061-6CD7-4B59-8624-1F94D18DD2A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6A1E061-6CD7-4B59-8624-1F94D18DD2A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FE077A3-0F7F-46D3-9EF1-9DB91B71F6CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FE077A3-0F7F-46D3-9EF1-9DB91B71F6CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FE077A3-0F7F-46D3-9EF1-9DB91B71F6CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FE077A3-0F7F-46D3-9EF1-9DB91B71F6CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
