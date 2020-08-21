@@ -1,0 +1,64 @@
+﻿<Window x:Class="QueryData.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:QueryData"
+        mc:Ignorable="d"
+        Title="Query Data" Height="450" Width="1045.745">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Canvas Margin="0,0,0,0">
+            <Label Canvas.Left="21" Canvas.Top="10" Width="114" Content="企业名称">
+            </Label>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="140" Canvas.Top="10"/>
+            <Label Canvas.Left="21" Canvas.Top="40" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="140" Canvas.Top="40"/>
+            <Label Canvas.Left="21" Canvas.Top="70" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="140" Canvas.Top="70"/>
+            <Label Canvas.Left="21" Canvas.Top="100" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="140" Canvas.Top="100"/>
+            <Label Canvas.Left="21" Canvas.Top="130" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="140" Canvas.Top="130"/>
+            <Label Canvas.Left="270" Canvas.Top="10" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="389" Canvas.Top="10"/>
+            <Label Canvas.Left="270" Canvas.Top="40" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="389" Canvas.Top="40"/>
+            <Label Canvas.Left="270" Canvas.Top="70" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="389" Canvas.Top="70"/>
+            <Label Canvas.Left="270" Canvas.Top="100" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="389" Canvas.Top="100"/>
+            <Label Canvas.Left="270" Canvas.Top="130" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="389" Canvas.Top="130"/>
+            <Label Canvas.Left="520" Canvas.Top="10" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="639" Canvas.Top="10"/>
+            <Label Canvas.Left="520" Canvas.Top="40" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="639" Canvas.Top="40"/>
+            <Label Canvas.Left="520" Canvas.Top="70" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="639" Canvas.Top="70"/>
+            <Label Canvas.Left="520" Canvas.Top="100" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="639" Canvas.Top="100"/>
+            <Label Canvas.Left="520" Canvas.Top="130" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="639" Canvas.Top="130"/>
+            <Label Canvas.Left="769" Canvas.Top="10" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="888" Canvas.Top="10"/>
+            <Label Canvas.Left="769" Canvas.Top="40" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="888" Canvas.Top="40"/>
+            <Label Canvas.Left="769" Canvas.Top="70" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="888" Canvas.Top="70"/>
+            <Label Canvas.Left="769" Canvas.Top="100" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="888" Canvas.Top="100"/>
+            <Label Canvas.Left="769" Canvas.Top="130" Width="114" Content="企业名称"/>
+            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="888" Canvas.Top="130"/>
+            <Button Content="查询" Canvas.Left="21" Canvas.Top="171" Width="75"/>
+            <Button Content="清除查询条件" Canvas.Left="110" Canvas.Top="171" Width="108"/>
+            <Button Content="导出到Excel" Canvas.Left="233" Canvas.Top="171" Width="108"/>
+        </Canvas>
+        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"/>
+        <DataGrid Grid.Row="2" Margin="0,0,0,0"   />
+    </Grid>
+</Window>
