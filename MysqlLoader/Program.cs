@@ -42,8 +42,24 @@ namespace MysqlLoader
             var dtSqlite = new DataTable();
             var telQuantityDict = new Dictionary<string, int>(); // 电话号码->数量
             var telTyshxydmDict = new Dictionary<string, List<string>>(); // 电话号码->统一社会信用代码列表
+            Action<string> addTelQuantity = (dh) =>
+            {
+                if (!telQuantityDict.ContainsKey(dh))
+                {
+                    telQuantityDict[dh] = 1;
+                }
+                else
+                {
+                    telQuantityDict[dh]++;
+                }
+            };
+
             Action<string, string> addTelTyshxydm = (dh, tyshxydm) =>{
-                if (telTyshxydmDict[dh].Contains(tyshxydm))
+                if (!telTyshxydmDict.ContainsKey(dh))
+                {
+                    telTyshxydmDict[dh] = new List<string>();
+                }
+                if (!telTyshxydmDict[dh].Contains(tyshxydm))
                 {
                     telTyshxydmDict[dh].Add(tyshxydm);
                 }
@@ -63,6 +79,19 @@ namespace MysqlLoader
             using (MySqlConnection cn = new MySqlConnection(mysqlConnectionString))
             {
                 cn.Open();
+                var tyshxydmLst = new List<string>();
+                {
+                    var ada = new MySqlDataAdapter($"select tyshxydm from EnterpriseInfo", cn);
+                    var dt = new DataTable();
+                    ada.Fill(dt);
+                    foreach(DataRow dr in dt.Rows)
+                    {
+                        tyshxydmLst.Add(dr["tyshxydm"].ToString());
+                    }
+                    tyshxydmLst.Sort();
+                    ada.Dispose();
+                    dt.Dispose();
+                }
                 foreach (DataRow dr in dtSqlite.Rows)
                 {
                     #region 定义数据变量
@@ -307,11 +336,9 @@ namespace MysqlLoader
                     cmdInsert.Parameters.Add(param);
                     cmdUpdate.Parameters.Add(param);
                     #endregion
-                    var ada = new MySqlDataAdapter($"select count(tyshxydm) from EnterpriseInfo where tyshxydm='{tyshxydm}'", cn);
-                    var dt = new DataTable();
-                    ada.Fill(dt);
+
                     #region Update
-                    if (Convert.ToInt32(dt.Rows[0][0]) > 0)
+                    if (tyshxydmLst.Contains(tyshxydm))
                     {
                         // Update
                         try
@@ -338,8 +365,6 @@ namespace MysqlLoader
                         }
                     }
                     #endregion
-                    ada.Dispose();
-                    dt.Dispose();
                 }
             }
             #endregion
@@ -371,23 +396,23 @@ namespace MysqlLoader
                     var zj3 = dr["zj3"].ToString();
                     var zj4 = dr["zj4"].ToString();
                     var zj5 = dr["zj5"].ToString();  // Search To
-                    if (dh1 != string.Empty)  { telQuantityDict[dh1]++; addTelTyshxydm(dh1, tyshxydm); }
-                    if (dh2 != string.Empty)  { telQuantityDict[dh2]++; addTelTyshxydm(dh2, tyshxydm); }
-                    if (dh3 != string.Empty)  { telQuantityDict[dh3]++; addTelTyshxydm(dh3, tyshxydm); }
-                    if (dh4 != string.Empty)  { telQuantityDict[dh4]++; addTelTyshxydm(dh4, tyshxydm); }
-                    if (dh5 != string.Empty)  { telQuantityDict[dh5]++; addTelTyshxydm(dh5, tyshxydm); }
-                    if (dh6 != string.Empty)  { telQuantityDict[dh6]++; addTelTyshxydm(dh6, tyshxydm); }
-                    if (dh7 != string.Empty)  { telQuantityDict[dh7]++; addTelTyshxydm(dh7, tyshxydm); }
-                    if (dh8 != string.Empty)  { telQuantityDict[dh8]++; addTelTyshxydm(dh8, tyshxydm); }
-                    if (dh9 != string.Empty)  { telQuantityDict[dh9]++; addTelTyshxydm(dh9, tyshxydm); }
-                    if (dh10 != string.Empty) { telQuantityDict[dh10]++; addTelTyshxydm(dh10, tyshxydm); }
-                    if (dh11 != string.Empty) { telQuantityDict[dh11]++; addTelTyshxydm(dh11, tyshxydm); }
-                    if (dh12 != string.Empty) { telQuantityDict[dh12]++; addTelTyshxydm(dh12, tyshxydm); }
-                    if (zj1 != string.Empty)  { telQuantityDict[zj1]++; addTelTyshxydm(zj1, tyshxydm); }
-                    if (zj2 != string.Empty)  { telQuantityDict[zj2]++; addTelTyshxydm(zj2, tyshxydm); }
-                    if (zj3 != string.Empty)  { telQuantityDict[zj3]++; addTelTyshxydm(zj3, tyshxydm); }
-                    if (zj4 != string.Empty)  { telQuantityDict[zj4]++; addTelTyshxydm(zj4, tyshxydm); }
-                    if (zj5 != string.Empty)  { telQuantityDict[zj5]++; addTelTyshxydm(zj5, tyshxydm); }
+                    if (dh1 != string.Empty) { addTelQuantity(dh1); addTelTyshxydm(dh1, tyshxydm); }
+                    if (dh2 != string.Empty) { addTelQuantity(dh2); addTelTyshxydm(dh2, tyshxydm); }
+                    if (dh3 != string.Empty) { addTelQuantity(dh3); addTelTyshxydm(dh3, tyshxydm); }
+                    if (dh4 != string.Empty) { addTelQuantity(dh4); addTelTyshxydm(dh4, tyshxydm); }
+                    if (dh5 != string.Empty) { addTelQuantity(dh5); addTelTyshxydm(dh5, tyshxydm); }
+                    if (dh6 != string.Empty) { addTelQuantity(dh6); addTelTyshxydm(dh6, tyshxydm); }
+                    if (dh7 != string.Empty) { addTelQuantity(dh7); addTelTyshxydm(dh7, tyshxydm); }     
+                    if (dh8 != string.Empty) { addTelQuantity(dh8); addTelTyshxydm(dh8, tyshxydm); }     
+                    if (dh9 != string.Empty) { addTelQuantity(dh9); addTelTyshxydm(dh9, tyshxydm); }
+                    if (dh10 != string.Empty) { addTelQuantity(dh10); addTelTyshxydm(dh10, tyshxydm); }
+                    if (dh11 != string.Empty) { addTelQuantity(dh11); addTelTyshxydm(dh11, tyshxydm); }
+                    if (dh12 != string.Empty) { addTelQuantity(dh12); addTelTyshxydm(dh12, tyshxydm); } 
+                    if (zj1 != string.Empty) { addTelQuantity(zj1); addTelTyshxydm(zj1, tyshxydm); }     
+                    if (zj2 != string.Empty) { addTelQuantity(zj2); addTelTyshxydm(zj2, tyshxydm); }     
+                    if (zj3 != string.Empty) { addTelQuantity(zj3); addTelTyshxydm(zj3, tyshxydm); }     
+                    if (zj4 != string.Empty) { addTelQuantity(zj4); addTelTyshxydm(zj4, tyshxydm); }     
+                    if (zj5 != string.Empty) { addTelQuantity(zj5); addTelTyshxydm(zj5, tyshxydm); }
                 }
             }
             #endregion
@@ -408,7 +433,7 @@ namespace MysqlLoader
                         var tyshxydmList = telTyshxydmDict[dh]; // 多个同行的统一社会信用代码
                         foreach (var tyshxydm in tyshxydmList)
                         {
-                            MySqlCommand cmdUpdate = new MySqlCommand($"UPDATE EnterpriseInfo SET th='Y' WHERE tyshxydm={tyshxydm}", cn);
+                            MySqlCommand cmdUpdate = new MySqlCommand($"UPDATE EnterpriseInfo SET th='Y' WHERE tyshxydm='{tyshxydm}'", cn);
                             cmdUpdate.ExecuteNonQuery();
                         }
                         // 更新同行电话号码表
