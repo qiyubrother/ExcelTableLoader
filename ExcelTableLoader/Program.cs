@@ -327,7 +327,7 @@ namespace ExcelTableLoader
 
                     item = GetColItem(cols, "曾用名");
                     var cym = Cell(dataLineNumber, item.Index);
-                    var lstCym = email1.Split(';'); //曾用名清单
+                    var lstCym = cym.Split(';'); //曾用名清单
                     var cym_arr = new string[5];
                     for (var i = 0; i < lstCym.Length && i < cym_arr.Length; cym_arr[i] = lstCym[i], i++) ;
                     for (var i = 0; i < cym_arr.Length; i++)
