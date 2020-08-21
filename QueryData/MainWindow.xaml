@@ -15,50 +15,52 @@
         <Canvas Margin="0,0,0,0">
             <Label Canvas.Left="21" Canvas.Top="10" Width="114" Content="企业名称">
             </Label>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="140" Canvas.Top="10"/>
-            <Label Canvas.Left="21" Canvas.Top="40" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="140" Canvas.Top="40"/>
-            <Label Canvas.Left="21" Canvas.Top="70" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="140" Canvas.Top="70"/>
-            <Label Canvas.Left="21" Canvas.Top="100" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="140" Canvas.Top="100"/>
-            <Label Canvas.Left="21" Canvas.Top="130" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="140" Canvas.Top="130"/>
-            <Label Canvas.Left="270" Canvas.Top="10" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="389" Canvas.Top="10"/>
-            <Label Canvas.Left="270" Canvas.Top="40" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="389" Canvas.Top="40"/>
-            <Label Canvas.Left="270" Canvas.Top="70" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="389" Canvas.Top="70"/>
-            <Label Canvas.Left="270" Canvas.Top="100" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="389" Canvas.Top="100"/>
-            <Label Canvas.Left="270" Canvas.Top="130" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="389" Canvas.Top="130"/>
-            <Label Canvas.Left="520" Canvas.Top="10" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="639" Canvas.Top="10"/>
-            <Label Canvas.Left="520" Canvas.Top="40" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="639" Canvas.Top="40"/>
-            <Label Canvas.Left="520" Canvas.Top="70" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="639" Canvas.Top="70"/>
-            <Label Canvas.Left="520" Canvas.Top="100" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="639" Canvas.Top="100"/>
-            <Label Canvas.Left="520" Canvas.Top="130" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="639" Canvas.Top="130"/>
-            <Label Canvas.Left="769" Canvas.Top="10" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="888" Canvas.Top="10"/>
-            <Label Canvas.Left="769" Canvas.Top="40" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="888" Canvas.Top="40"/>
-            <Label Canvas.Left="769" Canvas.Top="70" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="888" Canvas.Top="70"/>
-            <Label Canvas.Left="769" Canvas.Top="100" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="888" Canvas.Top="100"/>
-            <Label Canvas.Left="769" Canvas.Top="130" Width="114" Content="企业名称"/>
-            <TextBox Height="25"  Text="TextBox" Width="121" Canvas.Left="888" Canvas.Top="130"/>
-            <Button Content="查询" Canvas.Left="21" Canvas.Top="171" Width="75"/>
-            <Button Content="清除查询条件" Canvas.Left="110" Canvas.Top="171" Width="108"/>
-            <Button Content="导出到Excel" Canvas.Left="233" Canvas.Top="171" Width="108"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="140" Canvas.Top="10" Name="qymc"/>
+            <Label Canvas.Left="21" Canvas.Top="40" Width="114" Content="统一社会信用代码"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="140" Canvas.Top="40" Name="tyshxydm"/>
+            <Label Canvas.Left="21" Canvas.Top="70" Width="114" Content="纳税人识别号"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="140" Canvas.Top="70" Name="nsrsbm"/>
+            <Label Canvas.Left="21" Canvas.Top="100" Width="114" Content="组织机构代码"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="140" Canvas.Top="100" Name="zzjgdm"/>
+            <Label Canvas.Left="21" Canvas.Top="130" Width="114" Content="成立日期"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="140" Canvas.Top="130" Name="clrq" ToolTip="yyyy-mm-dd"/>
+            <Label Canvas.Left="270" Canvas.Top="10" Width="114" Content="经营状态"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="389" Canvas.Top="10" Name="jyzt"/>
+            <Label Canvas.Left="270" Canvas.Top="40" Width="114" Content="企业类型"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="389" Canvas.Top="40" Name="qylx"/>
+            <Label Canvas.Left="270" Canvas.Top="70" Width="114" Content="注册资本"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="389" Canvas.Top="70" Name="zczb"/>
+            <Label Canvas.Left="270" Canvas.Top="100" Width="114" Content="所属省份"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="389" Canvas.Top="100" Name="sssf"/>
+            <Label Canvas.Left="270" Canvas.Top="130" Width="114" Content="企业地址"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="389" Canvas.Top="130" Name="qydz"/>
+            <Label Canvas.Left="520" Canvas.Top="10" Width="114" Content="法定代表人"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="639" Canvas.Top="10" Name="fddbr"/>
+            <Label Canvas.Left="520" Canvas.Top="40" Width="114" Content="所属行业"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="639" Canvas.Top="40" Name="sshy"/>
+            <Label Canvas.Left="520" Canvas.Top="70" Width="114" Content="曾用名"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="639" Canvas.Top="70" Name="cym"/>
+            <Label Canvas.Left="520" Canvas.Top="100" Width="114" Content="所属城市"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="639" Canvas.Top="100" Name="sscs"/>
+            <Label Canvas.Left="520" Canvas.Top="130" Width="114" Content="经营范围"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="639" Canvas.Top="130" Name="jyfw"/>
+            <Label Canvas.Left="769" Canvas.Top="10" Width="114" Content="电话（手机或座机）"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="888" Canvas.Top="10" Name="dh"/>
+            <Label Canvas.Left="769" Canvas.Top="40" Width="114" Content="邮箱"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="888" Canvas.Top="40" Name="email"/>
+            <Label Canvas.Left="769" Canvas.Top="70" Width="114" Content="参保人数"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="888" Canvas.Top="70" Name="cbrs"/>
+            <Label Canvas.Left="769" Canvas.Top="100" Width="114" Content="所属区县"/>
+            <TextBox Height="25"  Text="" Width="121" Canvas.Left="888" Canvas.Top="100" Name="ssqx"/>
+            <Label Canvas.Left="769" Canvas.Top="130" Width="114" Content="是否同行"/>
+            <ComboBox Canvas.Left="889" Canvas.Top="130" Width="120" Name="th" Height="25">
+                <ComboBoxItem Height="20"></ComboBoxItem>
+                <ComboBoxItem Height="20">No</ComboBoxItem>
+                <ComboBoxItem Height="20">Yes</ComboBoxItem>
+            </ComboBox>
+            <Button Content="查询" Canvas.Left="21" Canvas.Top="171" Width="75" Name="btnQuery" Click="BtnQuery_Click"/>
         </Canvas>
         <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch"/>
-        <DataGrid Grid.Row="2" Margin="0,0,0,0"   />
+        <DataGrid Grid.Row="2" Margin="0,0,0,0" Name="grid" CanUserAddRows="False" />
     </Grid>
 </Window>
