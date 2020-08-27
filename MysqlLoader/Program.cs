@@ -41,7 +41,7 @@ namespace MysqlLoader
         {
             var dtSqlite = new DataTable();
             var telQuantityDict = new Dictionary<string, int>(); // 电话号码->数量
-            var telTyshxydmDict = new Dictionary<string, List<string>>(); // 电话号码->统一社会信用代码列表
+            var telQymcDict = new Dictionary<string, List<string>>(); // 电话号码->企业名称
             Action<string> addTelQuantity = (dh) =>
             {
                 if (!telQuantityDict.ContainsKey(dh))
@@ -54,14 +54,14 @@ namespace MysqlLoader
                 }
             };
 
-            Action<string, string> addTelTyshxydm = (dh, tyshxydm) =>{
-                if (!telTyshxydmDict.ContainsKey(dh))
+            Action<string, string> addTelQymc = (dh, _qymc) =>{
+                if (!telQymcDict.ContainsKey(dh))
                 {
-                    telTyshxydmDict[dh] = new List<string>();
+                    telQymcDict[dh] = new List<string>();
                 }
-                if (!telTyshxydmDict[dh].Contains(tyshxydm))
+                if (!telQymcDict[dh].Contains(_qymc))
                 {
-                    telTyshxydmDict[dh].Add(tyshxydm);
+                    telQymcDict[dh].Add(_qymc);
                 }
             };
             #region 读取sqlite数据库中的所有数据
@@ -79,19 +79,20 @@ namespace MysqlLoader
             using (MySqlConnection cn = new MySqlConnection(mysqlConnectionString))
             {
                 cn.Open();
-                var tyshxydmLst = new List<string>();
+                var qymcLst = new List<string>();
                 {
-                    var ada = new MySqlDataAdapter($"select tyshxydm from EnterpriseInfo", cn);
+                    var ada = new MySqlDataAdapter($"select qymc from EnterpriseInfo", cn);
                     var dt = new DataTable();
                     ada.Fill(dt);
                     foreach(DataRow dr in dt.Rows)
                     {
-                        tyshxydmLst.Add(dr["tyshxydm"].ToString());
+                        qymcLst.Add(dr["qymc"].ToString());
                     }
-                    tyshxydmLst.Sort();
+                    qymcLst.Sort();
                     ada.Dispose();
                     dt.Dispose();
                 }
+                Int64 pos = 0;
                 foreach (DataRow dr in dtSqlite.Rows)
                 {
                     #region 定义数据变量
@@ -144,8 +145,8 @@ namespace MysqlLoader
                     var jyfw = dr["jyfw"].ToString();
                     #endregion
                     #region 定义sql语句并配置参数
-                    MySqlCommand cmdInsert = new MySqlCommand("INSERT INTO EnterpriseInfo(ycrq, qymc, jyzt, fddbr, zczb, clrq, sssf, sscs, ssqx, dh1, dh2, dh3, dh4, dh5, dh6, dh7, dh8, dh9, dh10, dh11, dh12, zj1, zj2, zj3, zj4, zj5, email1, email2,email3, email4, email5, email6, tyshxydm, nsrsbm, zch, zzjgdm, cbrs, qylx, sshy, cym1, cym2, cym3, cym4, cym5, gw, qydz, jyfw) values (@ycrq, @qymc, @jyzt, @fddbr, @zczb, @clrq, @sssf, @sscs, @ssqx, @dh1, @dh2, @dh3, @dh4, @dh5, @dh6, @dh7, @dh8, @dh9, @dh10, @dh11, @dh12, @zj1, @zj2, @zj3, @zj4, @zj5, @email1, @email2, @email3, @email4, @email5, @email6, @tyshxydm, @nsrsbm, @zch, @zzjgdm, @cbrs, @qylx, @sshy, @cym1, @cym2, @cym3, @cym4, @cym5, @gw, @qydz, @jyfw)", cn);
-                    MySqlCommand cmdUpdate = new MySqlCommand("UPDATE EnterpriseInfo SET ycrq=@ycrq, qymc=@qymc, jyzt=@jyzt, fddbr=@fddbr, zczb=@zczb, clrq=@clrq, sssf=@sssf, sscs=@sscs, ssqx=@ssqx, dh1=@dh1, dh2=@dh2, dh3=@dh3, dh4=@dh4, dh5=@dh5, dh6=@dh6, dh7=@dh7, dh8=@dh8, dh9=@dh9, dh10=@dh10, dh11=@dh11, dh12=@dh12, zj1=@zj1, zj2=@zj2, zj3=@zj3, zj4=@zj4, zj5=@zj5, email1=@email1, email2=@email2, email3=@email3, email4=@email4, email5=@email5, email6=@email6, nsrsbm=@nsrsbm, zch=@zch, zzjgdm=@zzjgdm, cbrs=@cbrs, qylx=@qylx, sshy=@sshy, cym1=@cym1, cym2=@cym2, cym3=@cym3, cym4=@cym4, cym5=@cym5, gw=@gw, qydz=@qydz, jyfw=@jyfw WHERE tyshxydm=@tyshxydm", cn);
+                    MySqlCommand cmdInsert = new MySqlCommand("INSERT INTO EnterpriseInfo(ycrq, qymc, jyzt, fddbr, zczb, clrq, sssf, sscs, ssqx, dh1, dh2, dh3, dh4, dh5, dh6, dh7, dh8, dh9, dh10, dh11, dh12, zj1, zj2, zj3, zj4, zj5, email1, email2,email3, email4, email5, email6, tyshxydm, nsrsbm, zch, zzjgdm, cbrs, qylx, sshy, cym1, cym2, cym3, cym4, cym5, gw, qydz, jyfw, th) values (@ycrq, @qymc, @jyzt, @fddbr, @zczb, @clrq, @sssf, @sscs, @ssqx, @dh1, @dh2, @dh3, @dh4, @dh5, @dh6, @dh7, @dh8, @dh9, @dh10, @dh11, @dh12, @zj1, @zj2, @zj3, @zj4, @zj5, @email1, @email2, @email3, @email4, @email5, @email6, @tyshxydm, @nsrsbm, @zch, @zzjgdm, @cbrs, @qylx, @sshy, @cym1, @cym2, @cym3, @cym4, @cym5, @gw, @qydz, @jyfw, 'N')", cn);
+                    MySqlCommand cmdUpdate = new MySqlCommand("UPDATE EnterpriseInfo SET jyzt=@jyzt, fddbr=@fddbr, zczb=@zczb, clrq=@clrq, sssf=@sssf, sscs=@sscs, ssqx=@ssqx, dh1=@dh1, dh2=@dh2, dh3=@dh3, dh4=@dh4, dh5=@dh5, dh6=@dh6, dh7=@dh7, dh8=@dh8, dh9=@dh9, dh10=@dh10, dh11=@dh11, dh12=@dh12, zj1=@zj1, zj2=@zj2, zj3=@zj3, zj4=@zj4, zj5=@zj5, email1=@email1, email2=@email2, email3=@email3, email4=@email4, email5=@email5, email6=@email6, tyshxydm=@tyshxydm, nsrsbm=@nsrsbm, zch=@zch, zzjgdm=@zzjgdm, cbrs=@cbrs, qylx=@qylx, sshy=@sshy, cym1=@cym1, cym2=@cym2, cym3=@cym3, cym4=@cym4, cym5=@cym5, gw=@gw, qydz=@qydz, jyfw=@jyfw WHERE qymc=@qymc", cn);
                     MySqlParameter param = null;
 
                     param = new MySqlParameter("@ycrq", ycrq);
@@ -164,11 +165,15 @@ namespace MysqlLoader
                     cmdInsert.Parameters.Add(param);
                     cmdUpdate.Parameters.Add(param);
 
-                    param = new MySqlParameter("@zczb", zczb);
+                    var _zczb = zczb.Replace("万元人民币", string.Empty).Replace("人民币", string.Empty).Replace("万元", string.Empty);
+                    int.TryParse(_zczb, out int iZczb);
+                    param = new MySqlParameter("@zczb", iZczb); // 注册资本
+                    param.DbType = DbType.Int32;
                     cmdInsert.Parameters.Add(param);
                     cmdUpdate.Parameters.Add(param);
 
-                    param = new MySqlParameter("@clrq", clrq);
+                    param = new MySqlParameter("@clrq", clrq); // 成立日期
+                    param.DbType = DbType.Date;
                     cmdInsert.Parameters.Add(param);
                     cmdUpdate.Parameters.Add(param);
 
@@ -332,13 +337,17 @@ namespace MysqlLoader
                     cmdInsert.Parameters.Add(param);
                     cmdUpdate.Parameters.Add(param);
 
+                    if (jyfw.Length > 200)
+                    {
+                        jyfw = jyfw.Substring(0, 200);
+                    }
                     param = new MySqlParameter("@jyfw", jyfw);
                     cmdInsert.Parameters.Add(param);
                     cmdUpdate.Parameters.Add(param);
                     #endregion
 
                     #region Update
-                    if (tyshxydmLst.Contains(tyshxydm))
+                    if (qymcLst.Contains(qymc))
                     {
                         // Update
                         try
@@ -347,7 +356,7 @@ namespace MysqlLoader
                         }
                         catch (Exception ex)
                         {
-                            LogHelper.Trace($"UpdateError::tyshxydm:{tyshxydm},{ex.Message}");
+                            LogHelper.Trace($"UpdateError::qymc:{qymc},{ex.Message}");
                         }
                     }
                     #endregion
@@ -361,11 +370,17 @@ namespace MysqlLoader
                         }
                         catch (Exception ex)
                         {
-                            LogHelper.Trace($"InsertError::tyshxydm:{tyshxydm},{ex.Message}");
+                            LogHelper.Trace($"InsertError::qymc:{qymc},{ex.Message}");
                         }
                     }
                     #endregion
+                    if (++pos % 1000 == 0)
+                    {
+                        LogHelper.Trace($"已更新（{pos}/{dtSqlite.Rows.Count}）...");
+                    }
                 }
+
+                LogHelper.Trace($"已更新（{pos}/{dtSqlite.Rows.Count}）...");
             }
             #endregion
             #region 从mysql数据库生成电话号码字典
@@ -373,12 +388,12 @@ namespace MysqlLoader
             using (MySqlConnection cn = new MySqlConnection(mysqlConnectionString))
             {
                 cn.Open();
-                MySqlDataAdapter ada = new MySqlDataAdapter($"select tyshxydm, dh1, dh2, dh3, dh4, dh5, dh6, dh7, dh8, dh9, dh10, dh11, dh12, zj1, zj2, zj3, zj4, zj5 from enterpriseinfo", cn);
+                MySqlDataAdapter ada = new MySqlDataAdapter($"select qymc, dh1, dh2, dh3, dh4, dh5, dh6, dh7, dh8, dh9, dh10, dh11, dh12, zj1, zj2, zj3, zj4, zj5 from enterpriseinfo", cn);
                 var dt = new DataTable();
                 ada.Fill(dt);
                 foreach(DataRow dr in dt.Rows)
                 {
-                    var tyshxydm = dr["tyshxydm"].ToString();
+                    var qymc = dr["qymc"].ToString();
                     var dh1 = dr["dh1"].ToString();  // Search From 
                     var dh2 = dr["dh2"].ToString();
                     var dh3 = dr["dh3"].ToString();
@@ -396,23 +411,23 @@ namespace MysqlLoader
                     var zj3 = dr["zj3"].ToString();
                     var zj4 = dr["zj4"].ToString();
                     var zj5 = dr["zj5"].ToString();  // Search To
-                    if (dh1 != string.Empty) { addTelQuantity(dh1); addTelTyshxydm(dh1, tyshxydm); }
-                    if (dh2 != string.Empty) { addTelQuantity(dh2); addTelTyshxydm(dh2, tyshxydm); }
-                    if (dh3 != string.Empty) { addTelQuantity(dh3); addTelTyshxydm(dh3, tyshxydm); }
-                    if (dh4 != string.Empty) { addTelQuantity(dh4); addTelTyshxydm(dh4, tyshxydm); }
-                    if (dh5 != string.Empty) { addTelQuantity(dh5); addTelTyshxydm(dh5, tyshxydm); }
-                    if (dh6 != string.Empty) { addTelQuantity(dh6); addTelTyshxydm(dh6, tyshxydm); }
-                    if (dh7 != string.Empty) { addTelQuantity(dh7); addTelTyshxydm(dh7, tyshxydm); }     
-                    if (dh8 != string.Empty) { addTelQuantity(dh8); addTelTyshxydm(dh8, tyshxydm); }     
-                    if (dh9 != string.Empty) { addTelQuantity(dh9); addTelTyshxydm(dh9, tyshxydm); }
-                    if (dh10 != string.Empty) { addTelQuantity(dh10); addTelTyshxydm(dh10, tyshxydm); }
-                    if (dh11 != string.Empty) { addTelQuantity(dh11); addTelTyshxydm(dh11, tyshxydm); }
-                    if (dh12 != string.Empty) { addTelQuantity(dh12); addTelTyshxydm(dh12, tyshxydm); } 
-                    if (zj1 != string.Empty) { addTelQuantity(zj1); addTelTyshxydm(zj1, tyshxydm); }     
-                    if (zj2 != string.Empty) { addTelQuantity(zj2); addTelTyshxydm(zj2, tyshxydm); }     
-                    if (zj3 != string.Empty) { addTelQuantity(zj3); addTelTyshxydm(zj3, tyshxydm); }     
-                    if (zj4 != string.Empty) { addTelQuantity(zj4); addTelTyshxydm(zj4, tyshxydm); }     
-                    if (zj5 != string.Empty) { addTelQuantity(zj5); addTelTyshxydm(zj5, tyshxydm); }
+                    if (dh1 != string.Empty) { addTelQuantity(dh1); addTelQymc(dh1, qymc); }
+                    if (dh2 != string.Empty) { addTelQuantity(dh2); addTelQymc(dh2, qymc); }
+                    if (dh3 != string.Empty) { addTelQuantity(dh3); addTelQymc(dh3, qymc); }
+                    if (dh4 != string.Empty) { addTelQuantity(dh4); addTelQymc(dh4, qymc); }
+                    if (dh5 != string.Empty) { addTelQuantity(dh5); addTelQymc(dh5, qymc); }
+                    if (dh6 != string.Empty) { addTelQuantity(dh6); addTelQymc(dh6, qymc); }
+                    if (dh7 != string.Empty) { addTelQuantity(dh7); addTelQymc(dh7, qymc); }     
+                    if (dh8 != string.Empty) { addTelQuantity(dh8); addTelQymc(dh8, qymc); }     
+                    if (dh9 != string.Empty) { addTelQuantity(dh9); addTelQymc(dh9, qymc); }
+                    if (dh10 != string.Empty) { addTelQuantity(dh10); addTelQymc(dh10, qymc); }
+                    if (dh11 != string.Empty) { addTelQuantity(dh11); addTelQymc(dh11, qymc); }
+                    if (dh12 != string.Empty) { addTelQuantity(dh12); addTelQymc(dh12, qymc); } 
+                    if (zj1 != string.Empty) { addTelQuantity(zj1); addTelQymc(zj1, qymc); }     
+                    if (zj2 != string.Empty) { addTelQuantity(zj2); addTelQymc(zj2, qymc); }     
+                    if (zj3 != string.Empty) { addTelQuantity(zj3); addTelQymc(zj3, qymc); }     
+                    if (zj4 != string.Empty) { addTelQuantity(zj4); addTelQymc(zj4, qymc); }     
+                    if (zj5 != string.Empty) { addTelQuantity(zj5); addTelQymc(zj5, qymc); }
                 }
             }
             #endregion
@@ -430,10 +445,10 @@ namespace MysqlLoader
                     if (telQuantityDict[dh] > tongHangQuantity)
                     {
                         // 标记为同行
-                        var tyshxydmList = telTyshxydmDict[dh]; // 多个同行的统一社会信用代码
-                        foreach (var tyshxydm in tyshxydmList)
+                        var _qymcList = telQymcDict[dh]; // 多个同行的统一社会信用代码
+                        foreach (var _qymc in _qymcList)
                         {
-                            MySqlCommand cmdUpdate = new MySqlCommand($"UPDATE EnterpriseInfo SET th='Y' WHERE tyshxydm='{tyshxydm}'", cn);
+                            MySqlCommand cmdUpdate = new MySqlCommand($"UPDATE EnterpriseInfo SET th='Y' WHERE qymc='{_qymc}'", cn);
                             cmdUpdate.ExecuteNonQuery();
                         }
                         // 更新同行电话号码表

@@ -16,6 +16,7 @@ namespace ExcelTableLoader
     {
         static string dbFileName = @"ExcelData"; // sqlite 数据库文件名
         static int titleRowIndex = 2; //标题所在行
+        static string[] splitChars = null;
         static void Main(string[] args)
         {
             var configFileName = "config.json";
@@ -24,10 +25,19 @@ namespace ExcelTableLoader
                 LogHelper.Trace("config.json file losted.");
                 return;
             }
-            var jo = JObject.Parse(File.ReadAllText(configFileName));
+            var jo = JObject.Parse(File.ReadAllText(configFileName, System.Text.Encoding.Default));
             try { dbFileName = jo["sqliteDatabaseFile"].ToString(); }
             catch { LogHelper.Trace("config error. key is [sqliteDatabaseFile]."); }
             try { titleRowIndex = Convert.ToInt32(jo["titleLineNumber"].ToString()); } 
+            catch { LogHelper.Trace("config error. key is [titleLineNumber]"); }
+            try {
+                var arr = jo["SplitChars"] as JArray;
+                splitChars = new string[arr.Count];
+                for(var i = 0; i < splitChars.Length; i++)
+                {
+                    splitChars[i] = arr[i].ToString();
+                }
+            }
             catch { LogHelper.Trace("config error. key is [titleLineNumber]"); }
 
             LogHelper.StartService();
@@ -143,7 +153,7 @@ namespace ExcelTableLoader
                 while (dataLineNumber <= rows)
                 {
                     SQLiteCommand cmdInsert = new SQLiteCommand("INSERT INTO EnterpriseInfo(ycrq, qymc, jyzt, fddbr, zczb, clrq, sssf, sscs, ssqx, dh1, dh2, dh3, dh4, dh5, dh6, dh7, dh8, dh9, dh10, dh11, dh12, zj1, zj2, zj3, zj4, zj5, email1, email2,email3, email4, email5, email6, tyshxydm, nsrsbm, zch, zzjgdm, cbrs, qylx, sshy, cym1, cym2, cym3, cym4, cym5, gw, qydz, jyfw) values (@ycrq, @qymc, @jyzt, @fddbr, @zczb, @clrq, @sssf, @sscs, @ssqx, @dh1, @dh2, @dh3, @dh4, @dh5, @dh6, @dh7, @dh8, @dh9, @dh10, @dh11, @dh12, @zj1, @zj2, @zj3, @zj4, @zj5, @email1, @email2, @email3, @email4, @email5, @email6, @tyshxydm, @nsrsbm, @zch, @zzjgdm, @cbrs, @qylx, @sshy, @cym1, @cym2, @cym3, @cym4, @cym5, @gw, @qydz, @jyfw)", cn);
-                    SQLiteCommand cmdUpdate = new SQLiteCommand("UPDATE EnterpriseInfo SET ycrq=@ycrq, qymc=@qymc, jyzt=@jyzt, fddbr=@fddbr, zczb=@zczb, clrq=@clrq, sssf=@sssf, sscs=@sscs, ssqx=@ssqx, dh1=@dh1, dh2=@dh2, dh3=@dh3, dh4=@dh4, dh5=@dh5, dh6=@dh6, dh7=@dh7, dh8=@dh8, dh9=@dh9, dh10=@dh10, dh11=@dh11, dh12=@dh12, zj1=@zj1, zj2=@zj2, zj3=@zj3, zj4=@zj4, zj5=@zj5, email1=@email1, email2=@email2, email3=@email3, email4=@email4, email5=@email5, email6=@email6, nsrsbm=@nsrsbm, zch=@zch, zzjgdm=@zzjgdm, cbrs=@cbrs, qylx=@qylx, sshy=@sshy, cym1=@cym1, cym2=@cym2, cym3=@cym3, cym4=@cym4, cym5=@cym5, gw=@gw, qydz=@qydz, jyfw=@jyfw WHERE tyshxydm=@tyshxydm", cn);
+                    SQLiteCommand cmdUpdate = new SQLiteCommand("UPDATE EnterpriseInfo SET ycrq=@ycrq, qymc=@qymc, jyzt=@jyzt, fddbr=@fddbr, zczb=@zczb, clrq=@clrq, sssf=@sssf, sscs=@sscs, ssqx=@ssqx, dh1=@dh1, dh2=@dh2, dh3=@dh3, dh4=@dh4, dh5=@dh5, dh6=@dh6, dh7=@dh7, dh8=@dh8, dh9=@dh9, dh10=@dh10, dh11=@dh11, dh12=@dh12, zj1=@zj1, zj2=@zj2, zj3=@zj3, zj4=@zj4, zj5=@zj5, email1=@email1, email2=@email2, email3=@email3, email4=@email4, email5=@email5, email6=@email6, tyshxydm=@tyshxydm, nsrsbm=@nsrsbm, zch=@zch, zzjgdm=@zzjgdm, cbrs=@cbrs, qylx=@qylx, sshy=@sshy, cym1=@cym1, cym2=@cym2, cym3=@cym3, cym4=@cym4, cym5=@cym5, gw=@gw, qydz=@qydz, jyfw=@jyfw WHERE qymc=@qymc", cn);
 
                     var item = GetColItem(cols, "异常日期");
                     var ycrq = Cell(dataLineNumber, item.Index);
@@ -156,6 +166,14 @@ namespace ExcelTableLoader
                     param = new SQLiteParameter("@qymc", qymc);
                     cmdInsert.Parameters.Add(param);
                     cmdUpdate.Parameters.Add(param);
+
+                    if (qymc == string.Empty)
+                    {
+                        LogHelper.Trace($"无效的“企业名称”。忽略。DataLineNumber:{dataLineNumber}");
+                        ignoreCount++;
+                        dataLineNumber++;
+                        continue;
+                    }
 
                     item = GetColItem(cols, "经营状态");
                     var jyzt = Cell(dataLineNumber, item.Index);
@@ -201,11 +219,11 @@ namespace ExcelTableLoader
 
                     item = GetColItem(cols, "电话");
                     var dh1 = Cell(dataLineNumber, item.Index);
-                    var splitChars = new[] { ';', ':', '!', ',', ' ', '|', '，', '；', '：', '！', '　' };
-                    var lstDh1 = dh1.Split(splitChars); //电话清单1
+                    //var splitChars = new[] { ';', ':', '!', ',', ' ', '|', '，', '；', '：', '！', '　' };
+                    var lstDh1 = dh1.Split(splitChars, StringSplitOptions.RemoveEmptyEntries); //电话清单1
                     item = GetColItem(cols, "更多电话");
                     var dh2 = Cell(dataLineNumber, item.Index);
-                    var lstDh2 = dh2.Split(splitChars); //电话清单2
+                    var lstDh2 = dh2.Split(splitChars, StringSplitOptions.RemoveEmptyEntries); //电话清单2
                     var dhs = new List<string>(); // 存储手机号码清单
                     var zjs = new List<string>(); // 存储座机号码清单
                     dhs.AddRange(lstDh1);
@@ -258,10 +276,10 @@ namespace ExcelTableLoader
 
                     item = GetColItem(cols, "邮箱");
                     var email1 = Cell(dataLineNumber, item.Index);
-                    var lstEmail1 = email1.Split(splitChars); //邮箱清单1
+                    var lstEmail1 = email1.Split(splitChars, StringSplitOptions.RemoveEmptyEntries); //邮箱清单1
                     item = GetColItem(cols, "更多邮箱");
                     var email2 = Cell(dataLineNumber, item.Index);
-                    var lstEmail2 = email2.Split(splitChars); //邮箱清单2
+                    var lstEmail2 = email2.Split(splitChars, StringSplitOptions.RemoveEmptyEntries); //邮箱清单2
                     var emails = new List<string>();
                     dhs.AddRange(lstEmail1);
                     dhs.AddRange(lstEmail2);
@@ -275,19 +293,11 @@ namespace ExcelTableLoader
                         cmdUpdate.Parameters.Add(param);
                     }
 
-                    item = GetColItem(cols, "统一社会信用代码"); // PK
+                    item = GetColItem(cols, "统一社会信用代码");
                     var tyshxydm = Cell(dataLineNumber, item.Index).Trim();
                     param = new SQLiteParameter("@tyshxydm", tyshxydm);
                     cmdInsert.Parameters.Add(param);
                     cmdUpdate.Parameters.Add(param);
-
-                    if (tyshxydm == string.Empty)
-                    {
-                        LogHelper.Trace($"无效的“统一社会信用代码”。忽略。DataLineNumber:{dataLineNumber}");
-                        ignoreCount++;
-                        dataLineNumber++;
-                        continue;
-                    }
 
                     item = GetColItem(cols, "纳税人识别号");
                     var nsrsbm = Cell(dataLineNumber, item.Index);
@@ -359,7 +369,7 @@ namespace ExcelTableLoader
                     cmdInsert.Parameters.Add(param);
                     cmdUpdate.Parameters.Add(param);
 
-                    var ada = new SQLiteDataAdapter($"select count(tyshxydm) from EnterpriseInfo where tyshxydm='{tyshxydm}'", cn);
+                    var ada = new SQLiteDataAdapter($"select count(qymc) from EnterpriseInfo where qymc='{qymc}'", cn);
                     var dt = new DataTable();
                     ada.Fill(dt);
                     if (Convert.ToInt32(dt.Rows[0][0]) > 0)

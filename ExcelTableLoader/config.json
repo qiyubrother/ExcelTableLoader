@@ -2,5 +2,18 @@
   "sqliteDatabaseFile": "D:\\excelloader\\ExcelData", /* 数据库文件名 */
   "titleLineNumber": "2", /* 标题列所在行 */
   "mysqlConnectionString": "server=127.0.0.1;database=houchunlei;Charset=utf8;userid=root;password=",
-  "tongHangQuantity": "5" /* 定义电话号码出现多少次视为同行 */
+  "tongHangQuantity": "5", /* 定义电话号码出现多少次视为同行 */
+  "SplitChars": [ /* 定义电话号码，邮箱，曾用名的分列符 */
+    ";",
+    ":",
+    "!",
+    ",",
+    " ",
+    "|",
+    "，",
+    "；",
+    "：",
+    "！",
+    "　"
+  ]
 }
